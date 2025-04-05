@@ -22,7 +22,7 @@
       height: 100vh;
       background-image: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif');
       background-size: cover;
-      opacity: 0.04;
+      opacity: 0.025;
       z-index: -1;
     }
 
@@ -67,6 +67,20 @@
       color: #f5c518;
       text-shadow: 2px 2px 0 #000;
       margin-bottom: 0.25rem;
+      transition: 0.2s ease;
+    }
+
+    .logo:hover {
+      animation: logoGlitch 0.3s steps(2, end) 2;
+    }
+
+    @keyframes logoGlitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 1px); }
+      40% { transform: translate(3px, -1px); }
+      60% { transform: translate(-1px, 2px); }
+      80% { transform: translate(1px, -2px); }
+      100% { transform: translate(0); }
     }
 
     .slogan {
@@ -103,6 +117,10 @@
       text-shadow: 1px 1px 0 #000;
     }
 
+    button:hover, input:hover {
+      outline: none;
+    }
+
     #error {
       color: #ff4444;
       margin-top: 0.5rem;
@@ -128,13 +146,15 @@
     <div class="logo">TimeTrack Corporation</div>
     <div class="slogan">Building the future, From the past.</div>
     <h1>Login</h1>
-    <input type="text" id="username" placeholder="Username" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Access</button>
+    <input type="text" id="username" placeholder="Username" onmouseover="playHoverSound()" />
+    <input type="password" id="password" placeholder="Password" onmouseover="playHoverSound()" />
+    <button onclick="login()" onmouseover="playHoverSound()">Access</button>
     <div id="error"></div>
     <span class="help-link">If you have forgotten your login information, please contact your head of department to get a replacement.</span>
   </div>
   <audio id="bgm" src="background-music.mp3" autoplay loop></audio>
+  <audio id="errorSound" src="error.mp3"></audio>
+  <audio id="hoverSound" src="hover.mp3"></audio>
   <script>
     const correctUsername = "Hamilton Tempus";
     const correctPassword = "TimeTrack";
@@ -143,12 +163,18 @@
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
       if (user === correctUsername && pass === correctPassword) {
-        window.location.href = "secret.html"; // Change to your post-login page
+        window.location.href = "secret.html";
       } else {
         document.getElementById('error').textContent = "ACCESS DENIED";
+        document.getElementById('errorSound').play();
       }
+    }
+
+    function playHoverSound() {
+      const audio = document.getElementById('hoverSound');
+      audio.currentTime = 0;
+      audio.play();
     }
   </script>
 </body>
 </html>
-
