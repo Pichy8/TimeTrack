@@ -22,7 +22,7 @@
       height: 100vh;
       background-image: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif');
       background-size: cover;
-      opacity: 0.08;
+      opacity: 0.04;
       z-index: -1;
     }
 
@@ -56,11 +56,23 @@
       z-index: 1;
     }
 
+    .logo-img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
     .logo {
       font-size: 3rem;
       color: #f5c518;
       text-shadow: 2px 2px 0 #000;
-      margin-bottom: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .slogan {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 2rem;
     }
 
     h1 {
@@ -103,8 +115,8 @@
       text-align: center;
       display: block;
       margin-top: 1rem;
-      cursor: pointer;
       text-shadow: 1px 1px 0 #000;
+      cursor: default;
     }
   </style>
 </head>
@@ -112,15 +124,17 @@
   <div class="static"></div>
   <div class="glitch"></div>
   <div class="container">
+    <img src="logo.png" alt="TimeTrack Logo" class="logo-img">
     <div class="logo">TimeTrack Corporation</div>
+    <div class="slogan">Building the future, From the past.</div>
     <h1>Login</h1>
     <input type="text" id="username" placeholder="Username" />
     <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Access</button>
     <div id="error"></div>
-    <span class="help-link" onclick="showHint()">Need help?</span>
+    <span class="help-link">If you have forgotten your login information, please contact your head of department to get a replacement.</span>
   </div>
-  <audio id="bgm" src="https://example.com/background-music.mp3" autoplay loop></audio>
+  <audio id="bgm" src="background-music.mp3" autoplay loop></audio>
   <script>
     const correctUsername = "Hamilton Tempus";
     const correctPassword = "TimeTrack";
@@ -134,10 +148,7 @@
         document.getElementById('error').textContent = "ACCESS DENIED";
       }
     }
-
-    function showHint() {
-      alert("The passage of time is tracked by those who built it.");
-    }
   </script>
 </body>
 </html>
+
