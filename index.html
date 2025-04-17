@@ -67,16 +67,7 @@
       color: #f5c518;
       text-shadow: 2px 2px 0 #000;
       margin-bottom: 0.25rem;
-      transition: 0.2s ease;
-    }
-
-    @keyframes logoGlitch {
-      0% { transform: translate(0); }
-      20% { transform: translate(-2px, 1px); }
-      40% { transform: translate(3px, -1px); }
-      60% { transform: translate(-1px, 2px); }
-      80% { transform: translate(1px, -2px); }
-      100% { transform: translate(0); }
+      transition: none;
     }
 
     .slogan {
@@ -152,14 +143,14 @@
   <audio id="errorSound" src="error.mp3"></audio>
   <audio id="hoverSound" src="hover.mp3"></audio>
   <script>
-    const correctUsername = "PLACEHOLDERPLACE";
+    const correctUsername = "Hamilton Tempus";
     const correctPassword = "TimeTrack";
 
     function login() {
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
       if (user === correctUsername && pass === correctPassword) {
-        window.location.href = "Main Page.html";
+        window.location.href = "secret.html";
       } else {
         document.getElementById('error').textContent = "ACCESS DENIED";
         document.getElementById('errorSound').play();
@@ -171,6 +162,12 @@
       audio.currentTime = 0;
       audio.play();
     }
+
+    window.onload = function() {
+      const bgm = document.getElementById('bgm');
+      bgm.play();
+    };
   </script>
 </body>
 </html>
+
