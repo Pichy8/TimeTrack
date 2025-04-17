@@ -142,6 +142,7 @@
   <audio id="bgm" src="background-music.mp3" autoplay loop></audio>
   <audio id="errorSound" src="error.mp3"></audio>
   <audio id="hoverSound" src="hover.mp3"></audio>
+  <audio id="loginSound" src="Login.mp3"></audio>
   <script>
     const correctUsername = "Hamilton Tempus";
     const correctPassword = "TimeTrack";
@@ -150,7 +151,11 @@
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
       if (user === correctUsername && pass === correctPassword) {
-        window.location.href = "secret.html";
+        const loginSound = document.getElementById('loginSound');
+        loginSound.play();
+        setTimeout(() => {
+          window.location.href = "secret.html";
+        }, 1000); // wait 1 sec to allow sound to play
       } else {
         document.getElementById('error').textContent = "ACCESS DENIED";
         document.getElementById('errorSound').play();
