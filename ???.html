@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Error</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #1a1a1a;
+      color: #f5c518;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .static {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif');
+      background-size: cover;
+      opacity: 0.08;
+      z-index: -1;
+    }
+
+    .glitch {
+      font-size: 10rem;
+      text-shadow: 2px 2px 0 #000;
+      color: #f5c518;
+      transition: filter 0.1s ease;
+    }
+
+    .subtext {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 700px;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .glitch-effect-1 { filter: hue-rotate(90deg); }
+    .glitch-effect-2 { filter: invert(1); }
+    .glitch-effect-3 { filter: blur(3px); }
+    .glitch-effect-4 { filter: contrast(200%); }
+    .glitch-effect-5 { filter: saturate(5); }
+  </style>
+</head>
+<body>
+  <div class="static"></div>
+
+  <a href="112.html" class="glitch" id="glitchText">404</a>
+  <div class="subtext">
+    The page you are looking for cannot be found, ensure that it has not been deleted or tampered with or, update your software and try again. If this problem persists, please contact your head of department.
+  </div>
+
+  <script>
+    const glitchText = document.getElementById('glitchText');
+    const effects = [
+      'glitch-effect-1',
+      'glitch-effect-2',
+      'glitch-effect-3',
+      'glitch-effect-4',
+      'glitch-effect-5'
+    ];
+
+    setInterval(() => {
+      const effect = effects[Math.floor(Math.random() * effects.length)];
+      glitchText.classList.add(effect);
+
+      setTimeout(() => {
+        glitchText.classList.remove(effect);
+      }, 500);
+    }, 750);
+  </script>
+</body>
+</html>
