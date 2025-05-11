@@ -3,150 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Override - 112</title>
-  <link rel="icon" type="image/png" href="logo.png">
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <title>???</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      background: black;
-      font-family: 'Share Tech Mono', monospace;
-      color: #FFD700;
       overflow: hidden;
+      background-color: #000;
+      font-family: 'Orbitron', sans-serif;
+      color: #f5c518;
     }
 
-    video.bg-video {
+    canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: cover;
       z-index: -1;
-      filter: hue-rotate(90deg) brightness(0.6);
     }
 
-    .window {
-      position: absolute;
-      background: rgba(0, 0, 0, 0.75);
-      border: 2px solid #FFD700;
-      padding: 1rem;
-      width: 300px;
-      height: 200px;
-      color: #FFD700;
-      box-shadow: 0 0 10px #FFD700;
-      overflow: auto;
-      font-size: 0.9rem;
+    .glitch {
+      font-size: 10rem;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20vh;
+      color: #f5c518;
+      text-shadow: 2px 2px #000;
+      transition: filter 0.1s ease;
     }
 
-    .falling-char {
-      position: absolute;
-      color: #FFD700;
+    .sub {
+      text-align: center;
+      margin-top: 2rem;
       font-size: 1.2rem;
-      animation: fall 4s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes fall {
-      0% { top: -5%; opacity: 0; }
-      10% { opacity: 1; }
-      100% { top: 110%; opacity: 0; }
+      color: #ccc;
     }
 
     .cursor {
-      position: fixed;
-      width: 32px;
-      height: 32px;
-      background: url('Cursor.png') no-repeat center center / cover;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #f5c518;
+      border-radius: 50%;
       pointer-events: none;
-      z-index: 9999;
-    }
-
-    .terminal-box {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #000;
-      border: 1px solid #FFD700;
-      padding: 1rem;
-      color: #FFD700;
-      width: 600px;
-      max-width: 90vw;
-      font-size: 1.1rem;
-      display: none;
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
-  <video class="bg-video" autoplay muted loop>
-    <source src="https://cdn.pixabay.com/video/2023/01/03/145117-790180050_large.mp4" type="video/mp4">
-  </video>
+  <canvas id="matrix"></canvas>
+  <a href="112.html" class="glitch" id="glitchText">404</a>
+  <div class="sub">The page you are looking for cannot be found, insure that it has not been deleted or tampered with or, update your software and try again. If this problem persists, please contact your head of department.</div>
+  <div class="cursor" id="cursor"></div>
 
-  <!-- Random fake windows -->
-  <div class="window" style="top: 10%; left: 5%;">Running encryption...<br>Progress: ████░░░░</div>
-  <div class="window" style="top: 25%; left: 40%;">Accessing city grid...<br>Status: Unstable</div>
-  <div class="window" style="top: 60%; left: 70%;">Trace bypass initiated<br>│██████░░░░│</div>
-  <div class="window" style="top: 40%; left: 10%;">Injecting payload v1.2<br>✓ Packet Sent</div>
-  <div class="window" style="top: 75%; left: 25%;">Establishing uplink<br>Connecting...</div>
-  <div class="window" style="top: 15%; left: 70%;">log_112.log<br>Error: Permission Denied</div>
-
-  <!-- Light falling text -->
   <script>
-    const chars = '0123456789ABCDEF';
-    for (let i = 0; i < 15; i++) {
-      const span = document.createElement('div');
-      span.classList.add('falling-char');
-      span.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-      span.style.left = Math.random() * 100 + 'vw';
-      span.style.animationDuration = (3 + Math.random() * 3) + 's';
-      document.body.appendChild(span);
+    // Matrix effect
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = '01';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#f5c518';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
     }
-  </script>
 
-  <div class="cursor" id="customCursor"></div>
-  <div class="terminal-box" id="terminal"></div>
+    setInterval(draw, 33);
 
-  <script>
-    const cursor = document.getElementById('customCursor');
+    // Glitch effects
+    const glitchText = document.getElementById('glitchText');
+    const filters = [
+      'blur(2px)',
+      'invert(1)',
+      'contrast(200%)',
+      'hue-rotate(90deg)',
+      'drop-shadow(0 0 10px #f5c518)'
+    ];
+
+    setInterval(() => {
+      const filter = filters[Math.floor(Math.random() * filters.length)];
+      glitchText.style.filter = filter;
+      setTimeout(() => glitchText.style.filter = 'none', 500);
+    }, 800);
+
+    // Cursor movement
+    const cursor = document.getElementById('cursor');
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
     document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
+      targetX = e.clientX;
+      targetY = e.clientY;
     });
 
-    setTimeout(() => {
-      document.querySelectorAll('.window').forEach(w => w.style.display = 'none');
-      document.querySelectorAll('.falling-char').forEach(c => c.remove());
-
-      const cursorEl = document.getElementById('customCursor');
-      cursorEl.style.transition = 'all 3s ease';
-      cursorEl.style.left = '50vw';
-      cursorEl.style.top = '50vh';
-
-      setTimeout(() => {
-        const terminal = document.getElementById('terminal');
-        terminal.style.display = 'block';
-
-        let msg = "hello? I can see someone else is connected here, How in the world did you get in??? Are you working for the city?";
-        let i = 0;
-        let typed = '';
-        const typeInterval = setInterval(() => {
-          typed += msg[i];
-          terminal.textContent = typed;
-          i++;
-          if (i >= msg.length) clearInterval(typeInterval);
-        }, 40);
-
-        // move the cursor slightly after typing
-        setTimeout(() => {
-          cursorEl.style.left = '55vw';
-          cursorEl.style.top = '55vh';
-        }, msg.length * 40 + 1000);
-
-      }, 3000);
-    }, 10000);
+    function updateCursor() {
+      currentX += (targetX - currentX) * 0.15;
+      currentY += (targetY - currentY) * 0.15;
+      cursor.style.left = currentX + 'px';
+      cursor.style.top = currentY + 'px';
+      requestAnimationFrame(updateCursor);
+    }
+    updateCursor();
   </script>
 </body>
 </html>
-
-
