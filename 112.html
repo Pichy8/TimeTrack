@@ -30,14 +30,9 @@
       margin-top: 20vh;
       color: #f5c518;
       text-shadow: 2px 2px #000;
+      display: block;
+      text-decoration: none;
       transition: filter 0.1s ease;
-    }
-
-    .sub {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 1.2rem;
-      color: #ccc;
     }
 
     .cursor {
@@ -54,7 +49,6 @@
 <body>
   <canvas id="matrix"></canvas>
   <a href="112.html" class="glitch" id="glitchText">404</a>
-  <div class="sub">The page you are looking for cannot be found, insure that it has not been deleted or tampered with or, update your software and try again. If this problem persists, please contact your head of department.</div>
   <div class="cursor" id="cursor"></div>
 
   <script>
@@ -89,7 +83,7 @@
       }
     }
 
-    setInterval(draw, 33);
+    setInterval(draw, 30); // slightly faster refresh
 
     // Glitch effects
     const glitchText = document.getElementById('glitchText');
@@ -98,19 +92,25 @@
       'invert(1)',
       'contrast(200%)',
       'hue-rotate(90deg)',
-      'drop-shadow(0 0 10px #f5c518)'
+      'drop-shadow(0 0 10px #f5c518)',
+      'opacity(0.5)',
+      'grayscale(100%)',
     ];
 
     setInterval(() => {
       const filter = filters[Math.floor(Math.random() * filters.length)];
       glitchText.style.filter = filter;
-      setTimeout(() => glitchText.style.filter = 'none', 500);
-    }, 800);
+      glitchText.textContent = Math.random() > 0.5 ? '404' : '4O4';
+      setTimeout(() => {
+        glitchText.style.filter = 'none';
+        glitchText.textContent = '404';
+      }, 500);
+    }, 400);
 
-    // Cursor movement
+    // Cursor movement (independent and faster)
     const cursor = document.getElementById('cursor');
     let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
+    let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
 
     document.addEventListener('mousemove', e => {
       targetX = e.clientX;
@@ -118,8 +118,8 @@
     });
 
     function updateCursor() {
-      currentX += (targetX - currentX) * 0.15;
-      currentY += (targetY - currentY) * 0.15;
+      currentX += (targetX - currentX) * 0.3;
+      currentY += (targetY - currentY) * 0.3;
       cursor.style.left = currentX + 'px';
       cursor.style.top = currentY + 'px';
       requestAnimationFrame(updateCursor);
