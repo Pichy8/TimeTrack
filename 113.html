@@ -20,7 +20,7 @@
     }
 
     ::selection {
-      background: rgba(255, 255, 0, 0.3);
+      background: rgba(255, 255, 0, 0.35);
       color: #000;
     }
 
@@ -30,7 +30,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       white-space: pre-line;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       z-index: 2;
     }
 
@@ -38,8 +38,8 @@
       position: absolute;
       inset: 0;
       white-space: pre-wrap;
-      font-size: 1.1rem;
-      line-height: 1.4;
+      font-size: 1.6rem;
+      line-height: 1.5;
       display: none;
       z-index: 1;
     }
@@ -50,7 +50,9 @@
       left: 50%;
       transform: translate(-50%, -50%);
       white-space: pre;
-      font-size: 1rem;
+      font-size: 1.6rem;
+      color: #f5c518;
+      text-shadow: 0 0 10px #000;
       display: none;
       z-index: 3;
       pointer-events: none;
@@ -67,7 +69,7 @@ PLEASE DONT TRUST HIM
   <div id="flood" class="flood"></div>
 
   <div id="eye" class="eye">
-    ⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⢠⡆⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⢠⡆⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠈⣷⣄⠀⠀⠀⠀⣾⣷⠀⠀⠀⠀⣠⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⢿⠿⠃⠀⠀⠀⠉⠉⠁⠀⠀⠐⠿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣤⣶⣶⣶⣤⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -88,7 +90,7 @@ PLEASE DONT TRUST HIM
 
   <script>
     const audio = document.getElementById('audio');
-    audio.volume = 0.4;
+    audio.volume = 0.35;
 
     function forcePlay() {
       audio.play().catch(() => setTimeout(forcePlay, 500));
@@ -101,24 +103,22 @@ PLEASE DONT TRUST HIM
 
     let floodIntensity = 0;
 
-    /* === 30s: denial + begin corruption === */
+    /* === 30s: denial + corruption begins === */
     setTimeout(() => {
       message.textContent = "No, nothing is wrong.";
 
       setInterval(() => {
         floodIntensity++;
 
-        // Playback distortion ramps
-        audio.playbackRate = 1 + Math.min(0.6, floodIntensity * 0.01);
+        // aggressive distortion ramp
+        audio.playbackRate = 1 + Math.min(0.9, floodIntensity * 0.02);
+        audio.volume = 0.25 + Math.random() * 0.25;
 
-        // Volume wobble
-        audio.volume = 0.3 + Math.random() * 0.15;
+      }, 400);
 
-      }, 500);
+    }, 30000);
 
-    }, 20000);
-
-    /* === 32s: flood begins === */
+    /* === 32s: flood begins (faster) === */
     setTimeout(() => {
       message.style.display = "none";
       flood.style.display = "block";
@@ -127,29 +127,29 @@ PLEASE DONT TRUST HIM
       const phrase = "No, nothing is wrong. ";
 
       setInterval(() => {
-        text += phrase;
+        text += phrase + phrase; // doubles spam rate
         flood.textContent = text;
 
-        // Shift highlight color over time
+        // Shift highlight color aggressively
         const hue = Math.floor(Math.random() * 360);
         document.styleSheets[0].insertRule(
-          `::selection { background: hsla(${hue}, 100%, 50%, 0.35); }`,
+          `::selection { background: hsla(${hue}, 100%, 50%, 0.45); }`,
           document.styleSheets[0].cssRules.length
         );
 
-      }, 100);
+      }, 60);
 
-    }, 22000);
+    }, 32000);
 
-    /* === 37s: eye appears === */
+    /* === 35s: the eye watches === */
     setTimeout(() => {
       eye.style.display = "block";
-    }, 27000);
+    }, 35000);
 
-    /* === 40s: forced reset === */
+    /* === 40s: system correction === */
     setTimeout(() => {
       window.location.href = "Employee Portal.html";
-    }, 32000);
+    }, 40000);
   </script>
 
 </body>
