@@ -2,45 +2,94 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title> </title>
+  <title></title>
+
   <style>
-    body {
+    html, body {
       margin: 0;
-      background: black;
+      width: 100%;
+      height: 100%;
+      background: #000;
       overflow: hidden;
       user-select: text;
     }
 
-    .hidden-message {
-      color: black; /* same as background */
+    body {
+      color: #000; /* force black text */
       font-family: monospace;
-      font-size: 1.2rem;
+    }
+
+    .message {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       white-space: pre-line;
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+
+    .flood {
+      position: absolute;
+      inset: 0;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      display: none;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="hidden-message">
+  <div id="message" class="message">
 PLEASE DONT TRUST HIM
 209135 WILL LEAD YOU
   </div>
 
-  <audio id="voidAudio" src="lostman.mp3" autoplay loop></audio>
+  <div id="flood" class="flood"></div>
+
+  <audio id="audio" src="lostman.mp3" loop></audio>
 
   <script>
-    const audio = document.getElementById('voidAudio');
-    audio.volume = 0.4;
-    audio.play().catch(() => {});
+    const audio = document.getElementById('audio');
 
-    // Force return after 10 seconds
+    // Force audio playback (with retry)
+    function forcePlay() {
+      audio.volume = 0.4;
+      audio.play().catch(() => {
+        setTimeout(forcePlay, 500);
+      });
+    }
+    forcePlay();
+
+    const message = document.getElementById('message');
+    const flood = document.getElementById('flood');
+
+    // After 30 seconds, change the message
+    setTimeout(() => {
+      message.textContent = "No, nothing is wrong.";
+    }, 30000);
+
+    // After 32 seconds, begin flooding text
+    setTimeout(() => {
+      message.style.display = "none";
+      flood.style.display = "block";
+
+      let text = "";
+      const phrase = "No, nothing is wrong. ";
+
+      const interval = setInterval(() => {
+        text += phrase;
+        flood.textContent = text;
+      }, 120);
+
+    }, 32000);
+
+    // Hard reset after 40 seconds
     setTimeout(() => {
       window.location.href = "Employee Portal.html";
-    }, 10000);
+    }, 40000);
   </script>
 
 </body>
