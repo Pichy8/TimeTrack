@@ -128,7 +128,7 @@
   let redirected = false;
 
   // Any interaction cancels the auto-redirect
-  ['click', 'mousemove', 'keydown'].forEach(evt => {
+  ['click'].forEach(evt => {
     document.addEventListener(evt, () => redirected = true, { once: true });
   });
 
