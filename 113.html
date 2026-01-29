@@ -15,8 +15,8 @@
     }
 
     body {
-      color: #000; /* force black text */
       font-family: monospace;
+      color: #000; /* text is same color as background */
     }
 
     .message {
@@ -26,22 +26,21 @@
       transform: translate(-50%, -50%);
       white-space: pre-line;
       font-size: 1.2rem;
-      pointer-events: none;
     }
 
     .flood {
       position: absolute;
       inset: 0;
+      white-space: pre-wrap;
       font-size: 1.1rem;
       line-height: 1.4;
-      white-space: pre-wrap;
       display: none;
-      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
+  <!-- Selectable but invisible text -->
   <div id="message" class="message">
 PLEASE DONT TRUST HIM
 209135 WILL LEAD YOU
@@ -53,10 +52,10 @@ PLEASE DONT TRUST HIM
 
   <script>
     const audio = document.getElementById('audio');
+    audio.volume = 0.4;
 
-    // Force audio playback (with retry)
+    // Force audio playback with retry
     function forcePlay() {
-      audio.volume = 0.4;
       audio.play().catch(() => {
         setTimeout(forcePlay, 500);
       });
@@ -66,12 +65,21 @@ PLEASE DONT TRUST HIM
     const message = document.getElementById('message');
     const flood = document.getElementById('flood');
 
-    // After 30 seconds, change the message
+    /* === 30s: shift === */
     setTimeout(() => {
       message.textContent = "No, nothing is wrong.";
+
+      // Begin subtle audio corruption
+      let rate = 1;
+      const distort = setInterval(() => {
+        rate += (Math.random() * 0.06 - 0.03);
+        rate = Math.max(0.85, Math.min(1.15, rate));
+        audio.playbackRate = rate;
+      }, 600);
+
     }, 30000);
 
-    // After 32 seconds, begin flooding text
+    /* === 32s: denial flood === */
     setTimeout(() => {
       message.style.display = "none";
       flood.style.display = "block";
@@ -79,14 +87,14 @@ PLEASE DONT TRUST HIM
       let text = "";
       const phrase = "No, nothing is wrong. ";
 
-      const interval = setInterval(() => {
+      setInterval(() => {
         text += phrase;
         flood.textContent = text;
-      }, 120);
+      }, 110);
 
     }, 32000);
 
-    // Hard reset after 40 seconds
+    /* === 40s: system correction === */
     setTimeout(() => {
       window.location.href = "Employee Portal.html";
     }, 40000);
