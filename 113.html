@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> </title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      user-select: text;
+    }
+
+    .hidden-message {
+      color: black; /* same as background */
+      font-family: monospace;
+      font-size: 1.2rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hidden-message">
+PLEASE DONT TRUST HIM
+209135 WILL LEAD YOU
+  </div>
+
+  <audio id="voidAudio" src="lostman.mp3" autoplay loop></audio>
+
+  <script>
+    const audio = document.getElementById('voidAudio');
+    audio.volume = 0.4;
+    audio.play().catch(() => {});
+
+    // Force return after 10 seconds
+    setTimeout(() => {
+      window.location.href = "Employee Portal.html";
+    }, 10000);
+  </script>
+
+</body>
+</html>
