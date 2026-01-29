@@ -125,6 +125,20 @@
       requestAnimationFrame(updateCursor);
     }
     updateCursor();
+    <script>
+  let redirected = false;
+
+  // Any interaction cancels the auto-redirect
+  ['click', 'mousemove', 'keydown'].forEach(evt => {
+    document.addEventListener(evt, () => redirected = true, { once: true });
+  });
+
+  // Redirect after 15 seconds of inactivity
+  setTimeout(() => {
+    if (!redirected) {
+      window.location.href = "113.html";
+    }
+  }, 15000);
   </script>
 </body>
 </html>
