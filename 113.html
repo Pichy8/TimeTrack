@@ -16,7 +16,12 @@
 
     body {
       font-family: monospace;
-      color: #000; /* text is same color as background */
+      color: #000;
+    }
+
+    ::selection {
+      background: rgba(255, 255, 0, 0.3);
+      color: #000;
     }
 
     .message {
@@ -26,6 +31,7 @@
       transform: translate(-50%, -50%);
       white-space: pre-line;
       font-size: 1.2rem;
+      z-index: 2;
     }
 
     .flood {
@@ -35,12 +41,24 @@
       font-size: 1.1rem;
       line-height: 1.4;
       display: none;
+      z-index: 1;
+    }
+
+    .eye {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: pre;
+      font-size: 1rem;
+      display: none;
+      z-index: 3;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Selectable but invisible text -->
   <div id="message" class="message">
 PLEASE DONT TRUST HIM
 209135 WILL LEAD YOU
@@ -48,38 +66,59 @@ PLEASE DONT TRUST HIM
 
   <div id="flood" class="flood"></div>
 
+  <div id="eye" class="eye">
+    ⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⢠⡆⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⣷⣄⠀⠀⠀⠀⣾⣷⠀⠀⠀⠀⣠⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢿⠿⠃⠀⠀⠀⠉⠉⠁⠀⠀⠐⠿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣤⣶⣶⣶⣤⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣠⣶⣿⣿⡿⣿⣿⣿⡿⠋⠉⠀⠀⠉⠙⢿⣿⣿⡿⣿⣿⣷⣦⡀⠀⠀⠀
+⠀⢀⣼⣿⣿⠟⠁⢠⣿⣿⠏⠀⠀⢠⣤⣤⡀⠀⠀⢻⣿⣿⡀⠙⢿⣿⣿⣦⠀⠀
+⣰⣿⣿⡟⠁⠀⠀⢸⣿⣿⠀⠀⠀⢿⣿⣿⡟⠀⠀⠈⣿⣿⡇⠀⠀⠙⣿⣿⣷⡄
+⠈⠻⣿⣿⣦⣄⠀⠸⣿⣿⣆⠀⠀⠀⠉⠉⠀⠀⠀⣸⣿⣿⠃⢀⣤⣾⣿⣿⠟⠁
+⠀⠀⠈⠻⣿⣿⣿⣶⣿⣿⣿⣦⣄⠀⠀⠀⢀⣠⣾⣿⣿⣿⣾⣿⣿⡿⠋⠁⠀⠀
+⠀⠀⠀⠀⠀⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠁⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠛⠿⠿⠿⠿⠿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢰⣷⡦⠀⠀⠀⢀⣀⣀⠀⠀⠀⢴⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣸⠟⠁⠀⠀⠀⠘⣿⡇⠀⠀⠀⠀⠙⢷⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠻⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀
+  </div>
+
   <audio id="audio" src="lostman.mp3" loop></audio>
 
   <script>
     const audio = document.getElementById('audio');
     audio.volume = 0.4;
 
-    // Force audio playback with retry
     function forcePlay() {
-      audio.play().catch(() => {
-        setTimeout(forcePlay, 500);
-      });
+      audio.play().catch(() => setTimeout(forcePlay, 500));
     }
     forcePlay();
 
     const message = document.getElementById('message');
     const flood = document.getElementById('flood');
+    const eye = document.getElementById('eye');
 
-    /* === 30s: shift === */
+    let floodIntensity = 0;
+
+    /* === 30s: denial + begin corruption === */
     setTimeout(() => {
       message.textContent = "No, nothing is wrong.";
 
-      // Begin subtle audio corruption
-      let rate = 1;
-      const distort = setInterval(() => {
-        rate += (Math.random() * 0.06 - 0.03);
-        rate = Math.max(0.85, Math.min(1.15, rate));
-        audio.playbackRate = rate;
-      }, 600);
+      setInterval(() => {
+        floodIntensity++;
+
+        // Playback distortion ramps
+        audio.playbackRate = 1 + Math.min(0.6, floodIntensity * 0.01);
+
+        // Volume wobble
+        audio.volume = 0.3 + Math.random() * 0.15;
+
+      }, 500);
 
     }, 30000);
 
-    /* === 32s: denial flood === */
+    /* === 32s: flood begins === */
     setTimeout(() => {
       message.style.display = "none";
       flood.style.display = "block";
@@ -90,11 +129,24 @@ PLEASE DONT TRUST HIM
       setInterval(() => {
         text += phrase;
         flood.textContent = text;
-      }, 110);
+
+        // Shift highlight color over time
+        const hue = Math.floor(Math.random() * 360);
+        document.styleSheets[0].insertRule(
+          `::selection { background: hsla(${hue}, 100%, 50%, 0.35); }`,
+          document.styleSheets[0].cssRules.length
+        );
+
+      }, 100);
 
     }, 32000);
 
-    /* === 40s: system correction === */
+    /* === 37s: eye appears === */
+    setTimeout(() => {
+      eye.style.display = "block";
+    }, 37000);
+
+    /* === 40s: forced reset === */
     setTimeout(() => {
       window.location.href = "Employee Portal.html";
     }, 40000);
