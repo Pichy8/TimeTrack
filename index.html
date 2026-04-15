@@ -144,35 +144,49 @@
   <audio id="hoverSound" src="hover.mp3"></audio>
   <audio id="loginSound" src="Login.mp3"></audio>
   <script>
-    const correctUsername = "Hamilton Tempus";
-    const correctPassword = "TimeTrack";
-
-    function login() {
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
-      if (user === correctUsername && pass === correctPassword) {
-        const loginSound = document.getElementById('loginSound');
-        loginSound.play();
-        setTimeout(() => {
-          window.location.href = "Employee Portal.html";
-        }, 1000); // wait 1 sec to allow sound to play
-      } else {
-        document.getElementById('error').textContent = "ACCESS DENIED";
-        document.getElementById('errorSound').play();
-      }
+  const logins = [
+    {
+      username: "Hamilton Tempus",
+      password: "TimeTrack",
+      redirect: "Employee Portal.html"
+    },
+    {
+      username: "Maria Cromwell",
+      password: "Whitebobatea",
+      redirect: "Employee Portal2.html"
     }
+  ];
 
-    function playHoverSound() {
-      const audio = document.getElementById('hoverSound');
-      audio.currentTime = 0;
-      audio.play();
+  function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    const match = logins.find(acc => acc.username === user && acc.password === pass);
+
+    if (match) {
+      const loginSound = document.getElementById('loginSound');
+      loginSound.play();
+
+      setTimeout(() => {
+        window.location.href = match.redirect;
+      }, 1000);
+    } else {
+      document.getElementById('error').textContent = "ACCESS DENIED";
+      document.getElementById('errorSound').play();
     }
+  }
 
-    window.onload = function() {
-      const bgm = document.getElementById('bgm');
-      bgm.play();
-    };
-  </script>
+  function playHoverSound() {
+    const audio = document.getElementById('hoverSound');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  window.onload = function() {
+    const bgm = document.getElementById('bgm');
+    bgm.play();
+  };
+</script>
 </body>
 </html>
 
