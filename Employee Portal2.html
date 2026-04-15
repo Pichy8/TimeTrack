@@ -1,1 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeTrack Corporation - Employee Portal</title>
+<link rel="icon" type="image/png" href="logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #1a1a1a;
+      color: #f5f5f5;
+    }
+
+    .static {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif');
+      background-size: cover;
+      opacity: 0.025;
+      z-index: -1;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 99;
+      display: none;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #2a2a2a;
+      padding: 2rem;
+      box-shadow: 0 0 10px #000;
+      z-index: 100;
+      text-align: center;
+      display: none;
+    }
+
+    .popup button {
+      margin-top: 1rem;
+      margin-inline: 0.5rem;
+      background-color: #f5c518;
+      color: #1a1a1a;
+      border: 2px solid #000;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .portal {
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #f5c518;
+      text-shadow: 1px 1px 0 #000;
+      display: flex;
+      align-items: center;
+    }
+
+    h1 img {
+      height: 40px;
+      margin-right: 1rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: #f5c518;
+      text-decoration: none;
+      font-size: 1.2rem;
+      text-shadow: 0 0 3px rgba(245,197,24,0.5);
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .content-box {
+      margin-top: 2rem;
+      padding: 1.2rem;
+      background: linear-gradient(145deg, #2a2a2a, #222);
+      border: 1px solid #555;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+      display: none;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .content-box.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .news-item {
+      margin-bottom: 4rem;
+    }
+
+    .news-item a {
+      font-size: 2rem;
+      display: block;
+    }
+
+    .news-sub {
+      font-size: 1.3rem;
+      color: #ccc;
+    }
+
+    .news-img {
+      width: 60px;
+      height: 60px;
+      background-color: #555;
+      margin-bottom: 0.5rem;
+    }
+
+    .dropdown {
+      margin: 2rem 0;
+      border-left: 2px solid #f5c518;
+      padding-left: 1rem;
+    }
+
+    .file {
+      display: inline-block;
+      width: 120px;
+      margin: 0.5rem;
+      text-align: center;
+    }
+
+    .file img {
+      width: 100px;
+      height: 100px;
+      background-color: #555;
+    }
+
+    .file div {
+      font-size: 1.5rem;
+    }
+
+    .next-page {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      position: relative;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="static"></div>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <p><strong>WARNING:</strong> Your software version is outdated. It is strongly recommended that you upgrade immediately.</p>
+    <button onclick="redirectUpdate()">Yes</button>
+    <button onclick="closePopup()">No</button>
+  </div>
+
+  <div class="portal">
+    <h1><img src="logo.png">Welcome to the TimeTrack Employee Portal</h1>
+
+    <ul>
+      <li><a href="#" onclick="openSection('news'); playClickSound()">District 20 News</a></li>
+      <li><a href="#" onclick="openSection('dashboard'); playClickSound()">Project Dashboard</a></li>
+      <li><a href="#" onclick="openSection('documents'); playClickSound()">Internal Documents</a></li>
+      <li><a href="#" onclick="openSection('messages'); playClickSound()">Messages</a></li>
+      <li><a href="404.html" onclick="playClickSound()">Requests</a></li>
+      <li><a href="4004.html" onclick="playClickSound()">Settings</a></li>
+    </ul>
+
+    <!-- EXISTING SECTIONS (unchanged for brevity) -->
+
+    <div id="messages" class="content-box">
+      <h2>Internal Messaging System</h2>
+
+      <div class="dropdown">
+        <p><strong>Chat Log: Employee-442</strong></p>
+        <ul><li>--DELETED--</li></ul>
+      </div>
+
+      <div class="dropdown">
+        <p><strong>Chat Log: Research Group B</strong></p>
+        <ul><li>--DELETED--</li></ul>
+      </div>
+
+      <div class="dropdown">
+        <p><strong>Chat Log: Time Audit Team</strong></p>
+        <ul><li>--DELETED--</li></ul>
+      </div>
+
+      <div class="dropdown">
+        <p><strong>Chat Log: Hamilton</strong></p>
+        <ul>
+          <li><a href="#" onclick="openHamiltonChat()">Open Log</a></li>
+        </ul>
+      </div>
+
+      <div id="hamiltonChat" style="display:none; margin-top:2rem; padding:1rem; background:#1f1f1f; border:1px solid #555;">
+        <p><strong>Hamilton - Internal Messages</strong></p>
+        <p>[LOG START]</p>
+
+        <!-- YOU WRITE HERE -->
+        <p>...</p>
+        <p>...</p>
+
+        <p>[LOG END]</p>
+      </div>
+    </div>
+
+  </div>
+
+  <audio id="hoverSound" src="hover.mp3"></audio>
+  <audio id="clickSound" src="click.mp3"></audio>
+  <audio id="bgm" src="Distant Ticking.mp3" autoplay loop></audio>
+
+  <script>
+    window.onload = function() {
+      document.getElementById('popup').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    };
+
+    function openSection(id) {
+      document.querySelectorAll('.content-box').forEach(box => {
+        box.classList.remove('show');
+        box.style.display = 'none';
+      });
+      const target = document.getElementById(id);
+      target.style.display = 'block';
+      requestAnimationFrame(() => target.classList.add('show'));
+    }
+
+    function openHamiltonChat() {
+      const chat = document.getElementById('hamiltonChat');
+      chat.style.display = chat.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function redirectUpdate() {
+      window.location.href = "update-404.html";
+    }
+
+    function playClickSound() {
+      document.getElementById('clickSound').play();
+    }
+  </script>
+</body>
+</html>
 
